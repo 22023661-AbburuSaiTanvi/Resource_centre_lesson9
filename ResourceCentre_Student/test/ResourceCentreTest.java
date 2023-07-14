@@ -170,7 +170,7 @@ public class ResourceCentreTest {
 		assertTrue("Test that there is an item available", chromebookList.get(2).getIsAvailable());
 		ok = ResourceCentre.doLoanChromebook(chromebookList, "CB0013", "" );
 		assertFalse("Test that the loan fails.", ok);
-		
+		//test
 		// write your code here
 	}
 
