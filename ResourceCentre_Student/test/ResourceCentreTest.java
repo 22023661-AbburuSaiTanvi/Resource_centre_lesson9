@@ -111,7 +111,45 @@ public class ResourceCentreTest {
 	public void testRetrieveAllChromebook() {
 		//fail("Not yet implemented");
 		// write your code here
+		//Test Case 1
+				// Test if Item list is not null and empty
+				assertNotNull("Test if there is valid Chromebook arraylist to add to", chromebookList);
+				assertEquals("Test that the Chromebook arraylist is empty.", 0, chromebookList.size());
+				// Attempt to retrieve the Camcoders 
+				String allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+				String testOutput = "";
+				// Test if the output is empty
+				assertEquals("Test that nothing is displayed", testOutput, allChromebook);
+
+				//Test Case 2
+				ResourceCentre.addChromebook(chromebookList, cb1);
+				ResourceCentre.addChromebook(chromebookList, cb2);
+				// Test that the list is not empty
+				assertEquals("Test that Camcorder arraylist size is 2.", 2, chromebookList.size());
+				// Attempt to retrieve the Camcoders 
+				allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+				testOutput = String.format("%-10s %-30s %-10s %-10s %-20s\n","CB0011", "My Google Chromebook 1st", "Yes", "", "Mac OS");
+				testOutput += String.format("%-10s %-30s %-10s %-10s %-20s\n","CB0012", "SAMSUNG Chromebook 4+", "Yes", "", "Win 10");
+//				testOutput += String.format("%-10s %-30s %-10s %-10s %-20s\n","CB0013", "HUAWEI Magicbook 100+", "No", "", "Mac 10");
+
+				// Test that the details are displayed correctly
+				assertEquals("Test that the display is correct.", testOutput, allChromebook);
+
+				//Test Case 3
+				cb3.setIsAvailable(false);
+				ResourceCentre.addChromebook(chromebookList, cb3);
+				assertEquals("Test that Chromebook arraylist size is 2.", 3, chromebookList.size());
+				assertFalse("Test that the last item in the arraylist is not available", chromebookList.get(2).getIsAvailable());
+				// Attempt to retrieve the Camcoders 
+				allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+				testOutput = String.format("%-10s %-30s %-10s %-10s %-20s\n","CB0011", "My Google Chromebook 1st", "Yes", "", "Mac OS");
+				testOutput += String.format("%-10s %-30s %-10s %-10s %-20s\n","CB0012", "SAMSUNG Chromebook 4+", "Yes", "", "Win 10");
+				// Test that the details are displayed correctly
+				assertEquals("Test that the display is correct.", testOutput, allChromebook);
 	}
+
+
+	
 
 	@Test
 	public void testDoLoanCamcorder() {
@@ -146,7 +184,7 @@ public class ResourceCentreTest {
 	public void testDoLoanChromebook() {
 		//fail("Not yet implemented");
 		// Test Case 1 - Loan an available Item
-		assertNotNull("test if there is valid Camcorder arraylist to loan from", chromebookList);
+		assertNotNull("test if there is valid Chromebook arraylist to loan from", chromebookList);
 		ResourceCentre.addChromebook(chromebookList, cb1);
 		Boolean ok = ResourceCentre.doLoanChromebook(chromebookList, "CB0011", "8-8-2020" );
 		assertTrue("Test if an available item is ok to loan?", ok);
@@ -197,21 +235,23 @@ public class ResourceCentreTest {
 	
 	@Test
 	public void testDoReturnChromebook() {
-		//fail("Not yet implemented");
-		// write your code here
-	}
+	    // fail("Not yet implemented");
+	    // write your code here
+	    assertNotNull("Test if there is a valid Chromebook arraylist to return to", chromebookList);
+	    ResourceCentre.addChromebook(chromebookList, cb1);
+	    boolean isLoaned = ResourceCentre.doLoanChromebook(chromebookList, "CB0011", "8-8-2020");
+	    assertTrue("Test if CB0011 is successfully loaned out.", isLoaned);
+	    boolean isReturned = ResourceCentre.doReturnChromebook(chromebookList, "CB0011");
+	    assertTrue("Test if CB0011 is successfully returned.", isReturned);
+	    assertTrue("Test that the item is available after returning.", chromebookList.get(0).getIsAvailable());
 
-	@After
-	public void tearDown() throws Exception {
-		cc1 = null;
-		cc2 = null;
-		cc3 = null;
-		cb1 = null;
-		cb2 = null;
-		cb3 = null;
-		camcorderList = null;
-		chromebookList = null;
+	    assertFalse("Test that an item that is not loaned out cannot be returned.",
+	        ResourceCentre.doReturnChromebook(chromebookList, "CB0011"));
 
-	}
+	    assertFalse("Test that a non-existent item cannot be returned.",
+	        ResourceCentre.doReturnChromebook(chromebookList, "CB0012"));
 
+	    System.out.println("testDoReturnChromebook: All test cases passed!");
+
+	  }
 }
