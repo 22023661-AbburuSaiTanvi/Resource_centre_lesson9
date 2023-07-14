@@ -150,11 +150,23 @@ public class ResourceCentre {
 	public static String retrieveAllChromebook(ArrayList<Chromebook> chromebookList) {
 		String output = "";
 		// write your code here
+		for (int i = 0; i < chromebookList.size(); i++) {
+			if (chromebookList.get(i).getIsAvailable()) {
+				output += String.format("%-10s %-30s %-10s %-10s %-20s\n", chromebookList.get(i).getAssetTag(),
+						chromebookList.get(i).getDescription(), 
+					ResourceCentre.showAvailability(chromebookList.get(i).getIsAvailable()),
+					chromebookList.get(i).getDueDate(),chromebookList.get(i).getOs());
+			}
+		}
+		
 		return output;
 	}
 	public static void viewAllChromebook(ArrayList<Chromebook> chromebookList) {
 		// write your code here
-		String output = retrieveAllChromebook(chromebookList);
+		ResourceCentre.setHeader("CAMCORDER LIST");
+		String output = String.format("%-10s %-30s %-10s %-10s %-20s\n", "ASSET TAG", "DESCRIPTION",
+				"AVAILABLE", "DUE DATE","OS");
+		output += retrieveAllChromebook(chromebookList);
 		System.out.println(output);
 	}
 
